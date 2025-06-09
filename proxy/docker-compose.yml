@@ -22,8 +22,8 @@ services:
     cap_drop: [all] # Drop all Linux capabilities (optional but recommended)
     security_opt: [no-new-privileges:true] # Another protection to restrict superuser privileges (optional but recommended)
     environment:
-      - CLOUDFLARE_API_TOKEN=KEY
-      - DOMAINS=example.com,jellyfin.example.com
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DOMAINS=${DOMAINS}
       - PROXIED=true
       - IP6_PROVIDER=none
 
@@ -32,9 +32,9 @@ services:
     restart: always
     image: "twingate/connector:latest"
     environment:
-      - TWINGATE_NETWORK=<TENANT NAME>
-      - TWINGATE_ACCESS_TOKEN=<ACCESS TOKEN>
-      - TWINGATE_REFRESH_TOKEN=<REFRESH TOKEN>
+      - TWINGATE_NETWORK=${TWINGATE_NETWORK}
+      - TWINGATE_ACCESS_TOKEN=${TWINGATE_ACCESS_TOKEN}
+      - TWINGATE_REFRESH_TOKEN=${TWINGATE_REFRESH_TOKEN}
 
 # For testing the proxy
   helloworld:
