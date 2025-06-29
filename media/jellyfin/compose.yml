@@ -1,0 +1,66 @@
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Ho_Chi_Minh
+      - JELLYFIN_PublishedServerUrl=http://10.0.0.101 #optional
+    volumes:
+      - ./volumns/config:/config
+      - /mnt/nas1/media:/media
+      - /mnt/nas1/docker/downloads:/downloads
+    devices:
+      - /dev/dri:/dev/dri #Use for Intel QuickSync
+    ports:
+      - 8096:8096
+      - 7359:7359/udp #Service Discovery
+      - 1900:1900/udp #Client Discovery
+    restart: unless-stopped
+# Remove the Jellyfin service if installed directly on system.
+
+  jellyseerr:
+    container_name: jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - ./volumns/jellyseerr:/app/config
+    ports:
+      - 5056:5056
+    restart: unless-stopped
+
+  jellystat-db:
+    image: postgres:15.2
+    container_name: jellystat-db
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - ./volumns/jellystat/postgres:/var/lib/postgresql/data
+
+  jellystat:
+    image: cyfershepard/jellystat:latest
+    container_name: jellystat
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_IP: jellystat-db
+      POSTGRES_PORT: 5432
+      JWT_SECRET: "my-secret-jwt-key"
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./volumns/jellystat/backup-data:/app/backend/backup-data
+    ports:
+      - "3000:3000"
+    depends_on:
+      - jellystat-db
+
+# Want more!? https://github.com/awesome-jellyfin/awesome-jellyfin

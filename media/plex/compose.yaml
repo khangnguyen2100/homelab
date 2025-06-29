@@ -3,11 +3,10 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Los_Angeles
+      - TZ=Asia/Ho_Chi_Minh
       - VERSION=docker
       - PLEX_CLAIM= #optional
     ports:
@@ -15,8 +14,9 @@ services:
     devices:
      - /dev/dri:/dev/dri # QuickSync
     volumes:
-      - ./plex:/config
-      - /data:/data
+      - ./volumns/plex/config:/config
+      - /mnt/nas1/media:/media
+      - /mnt/nas1/docker/downloads:/downloads
     restart: unless-stopped
 
   overseerr:
@@ -27,8 +27,9 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ./overseer/config:/config
-      - /data:/data
+      - ./volumns/overseer/config:/config
+      - /mnt/nas1/media:/media
+      - /mnt/nas1/docker/downloads:/downloads
     ports:
       - 5055:5055
     restart: unless-stopped
@@ -41,7 +42,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ./tautulli:/config
+      - ./volumns/tautulli:/config
     ports:
       - 8181:8181
     restart: unless-stopped
