@@ -1,9 +1,9 @@
-# Note: I installed this with the Proxmox Helper Script. So this config file is in /opt/glance. If you run with docker their may be multiple configuration files.
+server:
+  assets-path: /app/assets
+
 theme:
-  background-color: 0 0 16
-  primary-color: 43 59 81
-  positive-color: 61 66 44
-  negative-color: 6 96 59
+  custom-css-file: /assets/user.css
+
 pages:
   - name: Startpage
     width: slim
@@ -14,7 +14,7 @@ pages:
         widgets:
           - type: dns-stats
             service: pihole
-            url: http://192.168.1.76:8282
+            url: http://192.168.1.76
             token: ${PIHOLE_TOKEN}
 
           - type: monitor
@@ -70,13 +70,22 @@ pages:
             title: Network Services
             sites:
               - title: Pi-Hole
-                url: http://192.168.1.76:8282/admin
-                check-url: http://192.168.1.76:8282
+                url: http://192.168.1.76/admin
+                check-url: http://192.168.1.76/admin
                 icon: di:pi-hole
               - title: Cloudflare DDNS
                 url: https://dash.cloudflare.com
                 check-url: http://192.168.1.76:8000
                 icon: di:cloudflare
+
+          - type: monitor
+            cache: 1m
+            title: Smart Home
+            sites:
+              - title: Homebridge
+                url: http://192.168.1.76:8581
+                check-url: http://192.168.1.76:8581
+                icon: di:homebridge
 
   - name: Home
     # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
@@ -150,6 +159,91 @@ pages:
               - symbol: MSFT
                 name: Microsoft
 
+          - type: monitor
+            cache: 1m
+            title: Smart Home Control
+            sites:
+              - title: Homebridge
+                url: http://192.168.1.76:8581
+                check-url: http://192.168.1.76:8581
+                icon: di:homebridge
+
+  - name: Default
+    columns:
+      - size: small
+        widgets:
+          - type: calendar
+            first-day-of-week: monday
+
+          - type: rss
+            limit: 10
+            collapse-after: 3
+            cache: 12h
+            feeds:
+              - url: https://selfh.st/rss/
+                title: selfh.st
+              - url: https://ciechanow.ski/atom.xml
+              - url: https://www.joshwcomeau.com/rss.xml
+                title: Josh Comeau
+              - url: https://samwho.dev/rss.xml
+              - url: https://ishadeed.com/feed.xml
+                title: Ahmad Shadeed
+
+          - type: twitch-channels
+            channels:
+              - theprimeagen
+              - j_blow
+              - piratesoftware
+              - cohhcarnage
+              - christitustech
+              - EJ_SA
+
+      - size: full
+        widgets:
+          - type: group
+            widgets:
+              - type: hacker-news
+              - type: lobsters
+
+          - type: videos
+            channels:
+              - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+              - UCsBjURrPoezykLs9EqgamOA # Fireship
+              - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+              - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+
+          - type: group
+            widgets:
+              - type: reddit
+                subreddit: technology
+                show-thumbnails: true
+              - type: reddit
+                subreddit: selfhosted
+                show-thumbnails: true
+
+      - size: small
+        widgets:
+          - type: weather
+            location: London, United Kingdom
+            units: metric # alternatively "imperial"
+            hour-format: 12h # alternatively "24h"
+            # Optionally hide the location from being displayed in the widget
+            # hide-location: true
+
+          - type: markets
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                name: Apple
+              - symbol: MSFT
+                name: Microsoft
+
           - type: releases
             cache: 1d
             # Without authentication the Github API allows for up to 60 requests per hour. You can create a
@@ -157,20 +251,6 @@ pages:
             # token: ...
             repositories:
               - glanceapp/glance
-              - TechHutTV/homelab
+              - go-gitea/gitea
               - immich-app/immich
-
-  # Add more pages here:
-  # - name: Your page name
-  #   columns:
-  #     - size: small
-  #       widgets:
-  #         # Add widgets here
-
-  #     - size: full
-  #       widgets:
-  #         # Add widgets here
-
-  #     - size: small
-  #       widgets:
-  #         # Add widgets here
+              - syncthing/syncthing

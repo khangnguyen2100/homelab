@@ -1,0 +1,141 @@
+version: '3.8'
+
+networks:
+  servarrnetwork:
+    name: servarrnetwork
+
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8091
+    volumes:
+      - /mnt/nas1/docker/media/qbittorrent:/config
+      - /mnt/nas1/downloads:/data
+    ports:
+      - 8091:8091
+      - 6881:6881
+      - 6881:6881/udp
+    networks:
+      - servarrnetwork
+
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/nzbget:/config
+      - /mnt/nas1/downloads:/data
+    restart: unless-stopped
+    networks:
+      - servarrnetwork
+    ports:
+      - 6789:6789  # default NZBGet port
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/prowlarr:/config
+    restart: unless-stopped
+    networks:
+      - servarrnetwork
+    ports:
+      - 9696:9696  # default Prowlarr port
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/sonarr:/config
+      - /mnt/nas1/downloads:/data
+    ports:
+      - 8989:8989
+    networks:
+      - servarrnetwork
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/radarr:/config
+      - /mnt/nas1/downloads:/data
+    ports:
+      - 7878:7878
+    networks:
+      - servarrnetwork
+
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr:latest
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/lidarr:/config
+      - /mnt/nas1/downloads:/data
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - 8686:8686
+    networks:
+      - servarrnetwork
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /mnt/nas1/docker/media/bazarr:/config
+      - /mnt/nas1/downloads:/data
+    ports:
+      - 6767:6767
+    networks:
+      - servarrnetwork
+
+  ytdl-sub:
+    image: ghcr.io/jmbannon/ytdl-sub:latest
+    container_name: ytdl-sub
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/mods:universal-cron
+    volumes:
+      - /mnt/nas1/docker/media/ytdl-sub:/config
+      - /mnt/nas1/downloads:/youtube
+    networks:
+      - servarrnetwork
+    restart: unless-stopped

@@ -1,0 +1,20 @@
+version: '2'
+services:
+  homebridge:
+    image: homebridge/homebridge:latest
+    container_name: homebridge
+    restart: unless-stopped
+    network_mode: host
+    user: "1000:1000"
+    volumes:
+      - /mnt/nas1/docker/homebridge:/homebridge
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - HOMEBRIDGE_CONFIG_UI=1
+      - HOMEBRIDGE_CONFIG_UI_PORT=8581
+    logging:
+      driver: json-file
+      options:
+        max-size: "10mb"
+        max-file: "1"
+    

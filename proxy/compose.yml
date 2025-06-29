@@ -1,0 +1,55 @@
+services:
+  ddns:
+    image: favonia/cloudflare-ddns:latest
+    container_name: cloudflare-ddns
+    # network_mode: host # This bypasses network isolation and makes IPv6 easier (optional; see below)
+    restart: unless-stopped
+    user: "1000:1000" # Run the updater with specific user and group IDs (in that order).
+    read_only: true # Make the container filesystem read-only (optional but recommended)
+    cap_drop: [all] # Drop all Linux capabilities (optional but recommended)
+    security_opt: [no-new-privileges:true] # Another protection to restrict superuser privileges (optional but recommended)
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DOMAINS=${DOMAINS}
+      - PROXIED=true
+      - IP6_PROVIDER=none
+    
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    user: "1000:1000"
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    environment:
+      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+
+  twingate_connector:
+    container_name: twingate_connector
+    restart: always
+    user: "1000:1000"
+    image: "twingate/connector:latest"
+    environment:
+      - TWINGATE_NETWORK=${TWINGATE_NETWORK}
+      - TWINGATE_ACCESS_TOKEN=${TWINGATE_ACCESS_TOKEN}
+      - TWINGATE_REFRESH_TOKEN=${TWINGATE_REFRESH_TOKEN}
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:2024.07.0
+    network_mode: host  # Required for proper DNS and DHCP operation
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      TZ: "Asia/Ho_Chi_Minh"
+      WEBPASSWORD: "123123"  # Optional, set your web UI password
+      DNSMASQ_LISTENING: "all"
+      DNSMASQ_USER: "root"
+      DNS1: "8.8.8.8"
+      DNS2: "1.1.1.1"
+    volumes:
+      - /mnt/nas1/docker/proxy/pihole/etc-pihole:/etc/pihole
+      - /mnt/nas1/docker/proxy/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN  # Required for DHCP and DNS functionality
+volumes:
+  data:
+  letsencrypt:
