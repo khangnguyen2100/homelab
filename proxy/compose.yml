@@ -46,8 +46,8 @@ services:
       DNS1: "8.8.8.8"
       DNS2: "1.1.1.1"
     volumes:
-      - ./volumes/pihole/etc-pihole:/etc/pihole
-      - ./volumes/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+      - /mnt/nas1/docker/proxy/pihole/etc-pihole:/etc/pihole
+      - /mnt/nas1/docker/proxy/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
     cap_add:
       - NET_ADMIN  # Required for DHCP and DNS functionality
 volumes:

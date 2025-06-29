@@ -14,9 +14,9 @@ services:
     devices:
      - /dev/dri:/dev/dri # QuickSync
     volumes:
-      - ./volumns/plex/config:/config
+      - /mnt/nas1/docker/media/plex/plex/config:/config
       - /mnt/nas1/media:/media
-      - /mnt/nas1/docker/downloads:/downloads
+      - /mnt/nas1/downloads:/downloads
     restart: unless-stopped
 
   overseerr:
@@ -27,9 +27,9 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ./volumns/overseer/config:/config
+      - /mnt/nas1/docker/media/plex/overseer/config:/config
       - /mnt/nas1/media:/media
-      - /mnt/nas1/docker/downloads:/downloads
+      - /mnt/nas1/downloads:/downloads
     ports:
       - 5055:5055
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
       - PGID=1000
       - TZ=America/Los_Angeles
     volumes:
-      - ./volumns/tautulli:/config
+      - /mnt/nas1/docker/media/plex/tautulli:/config
     ports:
       - 8181:8181
     restart: unless-stopped

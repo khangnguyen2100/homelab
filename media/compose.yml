@@ -15,8 +15,8 @@ services:
       - TZ=${TZ}
       - WEBUI_PORT=8091
     volumes:
-      - ./volumns/qbittorrent:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/qbittorrent:/config
+      - /mnt/nas1/downloads:/data
     ports:
       - 8091:8091
       - 6881:6881
@@ -33,8 +33,8 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/nzbget:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/nzbget:/config
+      - /mnt/nas1/downloads:/data
     restart: unless-stopped
     networks:
       - servarrnetwork
@@ -50,7 +50,7 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/prowlarr:/config
+      - /mnt/nas1/docker/media/prowlarr:/config
     restart: unless-stopped
     networks:
       - servarrnetwork
@@ -67,8 +67,8 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/sonarr:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/sonarr:/config
+      - /mnt/nas1/downloads:/data
     ports:
       - 8989:8989
     networks:
@@ -84,8 +84,8 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/radarr:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/radarr:/config
+      - /mnt/nas1/downloads:/data
     ports:
       - 7878:7878
     networks:
@@ -97,8 +97,8 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/lidarr:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/lidarr:/config
+      - /mnt/nas1/downloads:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -118,8 +118,8 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./volumns/bazarr:/config
-      - /mnt/nas1/docker:/data
+      - /mnt/nas1/docker/media/bazarr:/config
+      - /mnt/nas1/downloads:/data
     ports:
       - 6767:6767
     networks:
@@ -134,8 +134,8 @@ services:
       - TZ=${TZ}
       - DOCKER_MODS=linuxserver/mods:universal-cron
     volumes:
-      - ./volumns/ytdl-sub:/config
-      - /data/youtube:/youtube
+      - /mnt/nas1/docker/media/ytdl-sub:/config
+      - /mnt/nas1/downloads:/youtube
     networks:
       - servarrnetwork
     restart: unless-stopped
