@@ -5,7 +5,6 @@ services:
     container_name: homebridge
     restart: unless-stopped
     network_mode: host
-    user: "1000:1000"
     volumes:
       - /mnt/nas1/docker/homebridge:/homebridge
     environment:

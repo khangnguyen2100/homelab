@@ -27,4 +27,3 @@ services:
       - "8555:8555/udp" # WebRTC over udp
     environment:
       FRIGATE_RTSP_PASSWORD: "PASSWORD"
-    user: "1000:1000"

@@ -37,7 +37,6 @@ services:
     image: pihole/pihole:2024.07.0
     network_mode: host  # Required for proper DNS and DHCP operation
     restart: unless-stopped
-    user: "1000:1000"
     environment:
       TZ: "Asia/Ho_Chi_Minh"
       WEBPASSWORD: "123123"  # Optional, set your web UI password
