@@ -3,7 +3,7 @@ services:
     container_name: glance
     image: glanceapp/glance
     restart: unless-stopped
-    user: "1000:1000"
+    user: root # 👈 Add this line
     volumes:
       - ./config:/app/config
       - ./assets:/app/assets

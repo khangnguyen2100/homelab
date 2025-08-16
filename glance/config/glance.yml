@@ -52,18 +52,34 @@ pages:
             cache: 1m
             title: Media Services
             sites:
-              - title: Qbittorrent
-                url: http://192.168.1.76:8091
-                check-url: http://192.168.1.76:8091
-                icon: di:qbittorrent
+              - title: Plex
+                url: http://192.168.1.76:32400
+                check-url: http://192.168.1.76:32400
+                icon: di:plex
               - title: NZBGet
                 url: http://192.168.1.76:6789
                 check-url: http://192.168.1.76:6789
                 icon: di:nzbget
-              - title: Prowlarr
-                url: http://192.168.1.76:9696
-                check-url: http://192.168.1.76:9696
-                icon: di:prowlarr
+
+              - title: Radarr (Movies)
+                url: http://192.168.1.76:7878
+                check-url: http://192.168.1.76:7878
+                icon: di:radarr
+
+              - title: Sonarr (TV series)
+                url: http://192.168.1.76:8989
+                check-url: http://192.168.1.76:8989
+                icon: di:sonarr
+
+              - title: Qbittorrent
+                url: http://192.168.1.76:8091
+                check-url: http://192.168.1.76:8091
+                icon: di:qbittorrent
+
+              - title: Bazarr (Subtitles)
+                url: http://192.168.1.76:6767
+                check-url: http://192.168.1.76:6767
+                icon: di:bazarr
 
           - type: monitor
             cache: 1m
@@ -254,3 +270,92 @@ pages:
               - go-gitea/gitea
               - immich-app/immich
               - syncthing/syncthing
+  - name: System Dashboard
+    columns:
+      - size: full
+        widgets:
+          - type: docker-containers
+            title: Docker Containers Status
+            show-stopped: true
+            show-logs: true
+            refresh: 30s
+            services:
+              jellyfin:
+                image: lscr.io/linuxserver/jellyfin:latest
+                labels:
+                  glance.name: Jellyfin
+                  glance.icon: si:jellyfin
+                  glance.url: http://192.168.1.76:8096
+                  glance.description: Movies & shows
+
+              jellyseerr:
+                image: fallenbagel/jellyseerr:latest
+                labels:
+                  glance.name: Jellyseerr
+                  glance.icon: si:search
+                  glance.url: http://192.168.1.76:5055
+                  glance.description: Media request manager
+
+              tautulli:
+                image: lscr.io/linuxserver/tautulli:latest
+                labels:
+                  glance.name: Tautulli
+                  glance.icon: si:plex
+                  glance.url: http://192.168.1.76:8181
+                  glance.description: Plex usage stats
+
+              overseerr:
+                image: lscr.io/linuxserver/overseerr:latest
+                labels:
+                  glance.name: Overseerr
+                  glance.icon: si:overleaf
+                  glance.url: http://192.168.1.76:5055
+                  glance.description: Request & approve movies
+
+              prowlarr:
+                image: lscr.io/linuxserver/prowlarr:latest
+                labels:
+                  glance.name: Prowlarr
+                  glance.icon: si:rss
+                  glance.url: http://192.168.1.76:9696
+                  glance.description: Indexer manager
+
+              radarr:
+                image: lscr.io/linuxserver/radarr:latest
+                labels:
+                  glance.name: Radarr
+                  glance.icon: si:film
+                  glance.url: http://192.168.1.76:7878
+                  glance.description: Movie downloader
+
+              sonarr:
+                image: lscr.io/linuxserver/sonarr:latest
+                labels:
+                  glance.name: Sonarr
+                  glance.icon: si:television
+                  glance.url: http://192.168.1.76:8989
+                  glance.description: TV show downloader
+
+              qbittorrent:
+                image: lscr.io/linuxserver/qbittorrent:latest
+                labels:
+                  glance.name: qBittorrent
+                  glance.icon: si:qbittorrent
+                  glance.url: http://192.168.1.76:8091
+                  glance.description: Torrent client
+
+              cloudflare-ddns:
+                image: favonia/cloudflare-ddns:latest
+                labels:
+                  glance.name: Cloudflare DDNS
+                  glance.icon: si:cloudflare
+                  glance.url: http://192.168.1.76:8000
+                  glance.description: Dynamic DNS Updater
+
+              pihole:
+                image: pihole/pihole:2024.07.0
+                labels:
+                  glance.name: Pi-hole
+                  glance.icon: si:pihole
+                  glance.url: http://192.168.1.76/admin
+                  glance.description: Network-wide ad blocker

@@ -1,23 +1,22 @@
 # Currently untested as written
 services:
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Ho_Chi_Minh
-      - VERSION=docker
-      - PLEX_CLAIM=${PLEX_CLAIM}
-    ports:
-      - 32400:32400
-    devices:
-     - /dev/dri:/dev/dri # QuickSync
-    volumes:
-      - /mnt/nas1/docker/media/plex/plex/config:/config
-      - /mnt/nas1/media:/media
-      - /mnt/nas1/downloads:/downloads
-    restart: unless-stopped
+  # plex:
+  #   image: lscr.io/linuxserver/plex:latest
+  #   container_name: plex
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Asia/Ho_Chi_Minh
+  #     - VERSION=docker
+  #     - PLEX_CLAIM=${PLEX_CLAIM}
+  #   ports:
+  #     - 32400:32400
+  #   devices:
+  #    - /dev/dri:/dev/dri # QuickSync
+  #   volumes:
+  #     - /mnt/nas1/docker/media/plex/plex/config:/config
+  #     - /mnt/nas1/media:/media
+  #   restart: unless-stopped
 
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
