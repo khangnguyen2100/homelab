@@ -32,7 +32,6 @@ services:
       - TWINGATE_NETWORK=${TWINGATE_NETWORK}
       - TWINGATE_ACCESS_TOKEN=${TWINGATE_ACCESS_TOKEN}
       - TWINGATE_REFRESH_TOKEN=${TWINGATE_REFRESH_TOKEN}
-
   pihole:
     container_name: pihole
     image: pihole/pihole:2024.07.0
@@ -50,6 +49,25 @@ services:
       - /mnt/nas1/docker/proxy/pihole/etc-dnsmasq.d:/etc/dnsmasq.d
     cap_add:
       - NET_ADMIN  # Required for DHCP and DNS functionality
+
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale
+    hostname: homelab-proxy
+    restart: unless-stopped
+    network_mode: "host"   # Important so tailscale can manage routes
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    volumes:
+      - /mnt/nas1/docker/proxy/tailscale-data:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}  # Pre-auth key from Tailscale admin console
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=homelab-proxy
+      - TS_EXTRA_ARGS=--ssh  # Enable Tailscale SSH (optional)
+
 volumes:
   data:
   letsencrypt:

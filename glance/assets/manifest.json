@@ -1,0 +1,27 @@
+{
+  "name": "Glance Dashboard",
+  "short_name": "Glance",
+  "description": "Personal dashboard for homelab management",
+  "start_url": "http://192.168.1.76:8080/home",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#317EFB",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "lang": "en"
+}

@@ -1,0 +1,308 @@
+/* FilterBar.css */
+.filter-bar {
+  margin: 0 auto;
+  margin-bottom: 12px;
+  max-width: 1012px;
+  position: sticky;
+  top: 0;
+
+  z-index: 10;
+  /* border-bottom: 1px solid var(--color-widget-content-border); */
+  /* border-radius: 0 0 var(--border-radius) var(--border-radius); */
+}
+
+.filter-bar-content {
+  /* background-color: var(--color-widget-background); */
+  background-color: var(--color-background);
+  padding: var(--widget-content-vertical-padding) 0;
+  padding-bottom: 0;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-widget-content-border);
+  padding-bottom: var(--widget-content-vertical-padding);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Language Filter */
+.language-filter {
+  position: relative;
+}
+
+.filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--color-widget-background);
+  border: 1px solid var(--color-widget-content-border);
+  border-radius: var(--border-radius);
+  color: var(--color-text-base);
+  font-size: var(--font-size-h2);
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filter-button:hover {
+  background-color: var(--color-widget-background-highlight);
+  border-color: var(--color-widget-content-border);
+}
+
+.filter-button:active {
+  background-color: var(--color-widget-background-highlight);
+  border-color: var(--color-widget-content-border);
+  transform: translateY(1px);
+}
+
+.filter-icon {
+  fill: var(--color-text-subdue);
+}
+
+.filter-text {
+  color: var(--color-text-subdue);
+}
+
+.filter-value {
+  color: var(--color-text-highlight);
+  font-weight: 600;
+}
+
+.dropdown-arrow {
+  fill: var(--color-text-subdue);
+  transition: transform 0.2s ease;
+}
+
+.language-filter .dropdown-arrow {
+  transform: rotate(0deg);
+}
+
+.language-filter.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Language Dropdown */
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  background: var(--color-widget-background);
+  border: 1px solid var(--color-widget-content-border);
+  border-radius: var(--border-radius);
+  box-shadow: 0 16px 32px rgba(1, 4, 9, 0.85);
+  z-index: 100;
+  max-height: 400px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.dropdown-search {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--color-widget-content-border);
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-widget-content-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-h2);
+  line-height: 1.6;
+  background: var(--color-widget-background);
+  color: var(--color-text-base);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(203, 161, 53, 0.3);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-base-muted);
+}
+
+.dropdown-list {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-base);
+  font-size: var(--font-size-h2);
+  line-height: 1.6;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-widget-background-highlight);
+}
+
+.dropdown-item.selected {
+  background-color: var(--color-widget-background-highlight);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.check-icon {
+  fill: var(--color-primary);
+}
+
+/* Date Range Filter */
+.date-range-filter {
+  display: flex;
+  align-items: center;
+}
+
+.date-range-buttons {
+  display: flex;
+  border: 1px solid var(--color-widget-content-border);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.date-range-button {
+  padding: 0.3rem 0.8rem;
+  border: none;
+  background: var(--color-widget-background);
+  color: var(--color-text-base);
+  font-size: var(--font-size-h2);
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-right: 1px solid var(--color-widget-content-border);
+  white-space: nowrap;
+  position: relative;
+}
+
+.date-range-button:last-child {
+  border-right: none;
+}
+
+.date-range-button:hover:not(.selected) {
+  background-color: var(--color-widget-background-highlight);
+}
+
+.date-range-button.selected {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  font-weight: 600;
+}
+
+.date-range-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .filter-bar-content {
+    padding: 0.8rem 16px;
+  }
+
+  .filter-group {
+    gap: 0.8rem;
+  }
+
+  .language-dropdown {
+    min-width: 260px;
+    left: 0;
+    right: auto;
+  }
+
+  .filter-text {
+    display: none;
+  }
+
+  .date-range-buttons {
+    display: flex;
+  }
+
+  .date-range-button {
+    font-size: var(--font-size-h4);
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .filter-group {
+    justify-content: space-between;
+  }
+
+  .language-dropdown {
+    min-width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Loading state */
+.filter-bar.loading .filter-button {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.filter-bar.loading .date-range-button {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Focus management */
+.filter-button:focus,
+.date-range-button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.dropdown-item:focus {
+  background-color: var(--color-widget-background-highlight);
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+/* Animation for dropdown */
+.language-dropdown {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "avoid",
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "tabWidth": 2,
+        "useTabs": false,
+        "printWidth": 80,
+        "jsxSingleQuote": true,
+        "endOfLine": "lf",
+        "bracketSpacing": true,
+        "proseWrap": "preserve",
+        "bracketSameLine": false
+      }
+    ],
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-unused-vars": "off",
+    "eqeqeq": ["warn", "smart"],
+    "no-debugger": "warn",
+    "react/no-children-prop": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
+    "react/display-name": "off",
+    "react/jsx-key": "warn",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+    "no-empty": "warn",
+    "prefer-const": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "simple-import-sort/exports": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/prop-types": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "warnOnUnsupportedTypeScriptVersion": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    },
+    "react": {
+      "version": "detect"
+    }
+  },
+  "ignorePatterns": ["src/assets/"],   
+  "plugins": [
+    "@typescript-eslint", 
+    "prettier", 
+    "simple-import-sort", 
+    "unused-imports"
+  ]
+}

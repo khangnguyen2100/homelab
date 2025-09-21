@@ -5,41 +5,15 @@ theme:
   custom-css-file: /assets/user.css
 
 pages:
-  - name: Startpage
-    width: slim
-    hide-desktop-navigation: false
-    center-vertically: true
+  - name: Home 
     columns:
       - size: small
-        widgets:
-          - type: dns-stats
-            service: pihole
-            url: http://192.168.1.76
-            token: ${PIHOLE_TOKEN}
-
-          - type: monitor
-            cache: 1m
-            title: System Monitoring
-            sites:
-              - title: Grafana
-                url: http://192.168.1.76:3000
-                check-url: http://192.168.1.76:3000
-                icon: di:grafana
-              - title: Prometheus
-                url: http://192.168.1.76:9090
-                check-url: http://192.168.1.76:9090
-                icon: di:prometheus
-              - title: InfluxDB
-                url: http://192.168.1.76:8086
-                check-url: http://192.168.1.76:8086
-                icon: di:influxdb
-
-      - size: full
         widgets:
           - type: search
             autofocus: true
             search-engine: google
             new-tab: true
+            placeholder: Search...
             bangs:
               - title: YouTube
                 shortcut: "!yt"
@@ -47,7 +21,132 @@ pages:
               - title: Github
                 shortcut: "!gh"
                 url: https://github.com/search?q={QUERY}&type=repositories
+          
+          - type: calendar
+            first-day-of-week: monday
+          
+          - type: weather
+            location: Ho Chi Minh City, Vietnam
+            units: metric
+            hour-format: 24h
+            hide-location: false
 
+      - size: full
+        widgets:
+          - type: videos
+            channels:
+              - UCUuXPlozzyzcC0PHjLh6YaA # Duy Thanh Nguyen
+              - UCRsd_L7wBGdHLhfacuy3QVw # Spiderum
+              - UCQ0jSGgYMLmRMeTE6UaPPXg # duyluandethuong
+              - UCY1kMZp36IQSyNx_9h4mpCg # mark ...
+              - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+              - UCsBjURrPoezykLs9EqgamOA # Fireship
+              - UCky92hx0lZxVBi2BJ6Zm2Hg # Tips Javascript
+              - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+              - UCyqxvGyF5LO67HI6vdE5bfQ # Vinh Xo
+          
+          - type: group
+            widgets:
+              - type: iframe
+                source: https://glance-iframe.khangng2100.live/trending
+                title: github trending
+                height: 410
+              - type: reddit
+                subreddit: technology
+                show-thumbnails: true
+                limit: 10
+                collapse-after: 5
+              - type: reddit
+                subreddit: selfhosted
+                show-thumbnails: true
+                limit: 10
+                collapse-after: 5
+              - type: reddit
+                subreddit: vozforums
+                show-thumbnails: true
+                limit: 10
+                collapse-after: 5
+
+      - size: small
+        widgets:
+          - type: markets
+            # The link to go to when clicking on the symbol in the UI,
+            # {SYMBOL} will be substituded with the symbol for each market
+            symbol-link-template: https://www.tradingview.com/symbols/{SYMBOL}/?timeframe=1M
+            sort-by: change
+            markets:
+              - symbol: AAPL
+                name: Apple
+              - symbol: MSFT
+                name: Microsoft
+              - symbol: FPT.VN
+                name: FPT Corporation 
+              - symbol: HPG.VN
+                name: Hoa Phat Group JSC
+              - symbol: LTC-USD
+                name: Litecoin
+              - symbol: BTC
+                name: Bitcoin
+          
+          - type: iframe
+            source: https://glance-iframe.khangng2100.live/gold-price
+            title: Giá vàng Việt Nam
+            height: 350
+  
+  - name: System Dashboard
+    columns:
+      - size: small
+        widgets:
+          - type: dns-stats
+            service: pihole
+            url: http://192.168.1.76
+            token: ${PIHOLE_TOKEN}
+          
+          - type: custom-api
+            title: Cloudflared Tunnels
+            css-class: "widget-type-cloudflared"
+            cache: 4h
+            url: https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/cfd_tunnel/${CLOUDFLARE_TUNNEL_ID}/configurations
+            headers:
+              Authorization: Bearer ${CLOUDFLARE_TUNNEL_TOKEN}
+            template: |
+              {{ $domain_name := ".example.com" }}  {{/* Set your domain name */}}
+
+              <style>
+                .widget-type-cloudflared li {
+                  margin-top: var(--list-half-gap); 
+                  border-top: 1px solid var(--color-separator);
+                  padding-top: var(--list-half-gap);
+                }
+              </style>
+              <ul class="dynamic-columns list-gap-15 list-with-separator">
+              {{ range .JSON.Array "result.config.ingress" }}
+                {{ if (.String "hostname") }}
+                <li class="flex items-center gap-20">
+                    <div class="shrink-0">
+                        <img class="docker-container-icon" src="https://developers.cloudflare.com/logo.svg" alt="" loading="lazy">
+                    </div>
+                    <div class="min-width-0 grow">
+                      <a href='https://{{ .String "hostname" }}' class="color-highlight size-title-dynamic block text-truncate" target="_blank" rel="noreferrer">{{ .String "hostname" | trimSuffix $domain_name }}</a>
+                      {{ if (.String "service") }}
+                      <div class="flex items-center gap-10" style="margin-bottom: 5px">
+                        <div class="text-left">
+                          <img src="/assets/img/link-down-right.png" style="width: auto; height: 20px; margin-left: 0px; margin-top: -4px;">
+                        </div>
+                        <div class="size-h6 flex-1 text-left">
+                          <a href='{{ .String "service" | replaceAll "localhost" "192.168.0.150" }}' target="_blank" rel="noreferrer">{{ .String "service" }}</a>
+                        </div>
+                      </div>
+                      {{ end}}
+                    </div>
+                </li>
+                {{ end }}
+              {{ end }}
+              </ul>
+
+      - size: full
+        widgets:
           - type: monitor
             cache: 1m
             title: Media Services
@@ -89,8 +188,14 @@ pages:
                 url: http://192.168.1.76/admin
                 check-url: http://192.168.1.76/admin
                 icon: di:pi-hole
+
               - title: Cloudflare DDNS
-                url: https://dash.cloudflare.com
+                url: https://dash.cloudflare.com/44eac9f2adf39930db03120885adbb80/khangng2100.live
+                check-url: http://192.168.1.76:8000
+                icon: di:cloudflare
+
+              - title: Cloudflare Tunnels
+                url: https://one.dash.cloudflare.com/44eac9f2adf39930db03120885adbb80/networks/tunnels/cfd_tunnel/a871d8a9-57e3-4f65-be32-71202cbe8668/edit?tab=publicHostname
                 check-url: http://192.168.1.76:8000
                 icon: di:cloudflare
 
@@ -103,177 +208,6 @@ pages:
                 check-url: http://192.168.1.76:8581
                 icon: di:homebridge
 
-  - name: Home
-    # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
-    # hide-desktop-navigation: true
-    columns:
-      - size: small
-        widgets:
-          - type: calendar
-            first-day-of-week: monday
-
-          - type: rss
-            limit: 10
-            collapse-after: 3
-            cache: 12h
-            feeds:
-              - url: https://omgubuntu.co.uk/feed
-                title: OmgUbuntu
-                limit: 4
-              - url: https://9to5linux.com/feed/atom
-                title: 9to5Linux
-                limit: 4
-
-          - type: twitch-channels
-            channels:
-              - technotim
-              - piratesoftware
-
-      - size: full
-        widgets:
-          - type: group
-            widgets:
-              - type: hacker-news
-              - type: lobsters
-
-          - type: videos
-            channels:
-              - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
-              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-              - UCsBjURrPoezykLs9EqgamOA # Fireship
-              - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
-
-          - type: group
-            widgets:
-              - type: reddit
-                subreddit: technology
-                show-thumbnails: true
-              - type: reddit
-                subreddit: selfhosted
-                show-thumbnails: true
-
-      - size: small
-        widgets:
-          - type: weather
-            location: 98664
-            units: imperial
-            hour-format: 12h # alternatively "24h"
-            # Optionally hide the location from being displayed in the widget
-            # hide-location: true
-
-          - type: markets
-            # The link to go to when clicking on the symbol in the UI,
-            # {SYMBOL} will be substituded with the symbol for each market
-            symbol-link-template: https://www.tradingview.com/symbols/{SYMBOL}/news
-            markets:
-              - symbol: LTC-USD
-                name: Litecoin
-              - symbol: XRP-USD
-                name: Ripple
-              - symbol: AAPL
-                name: Apple
-              - symbol: MSFT
-                name: Microsoft
-
-          - type: monitor
-            cache: 1m
-            title: Smart Home Control
-            sites:
-              - title: Homebridge
-                url: http://192.168.1.76:8581
-                check-url: http://192.168.1.76:8581
-                icon: di:homebridge
-
-  - name: Default
-    columns:
-      - size: small
-        widgets:
-          - type: calendar
-            first-day-of-week: monday
-
-          - type: rss
-            limit: 10
-            collapse-after: 3
-            cache: 12h
-            feeds:
-              - url: https://selfh.st/rss/
-                title: selfh.st
-              - url: https://ciechanow.ski/atom.xml
-              - url: https://www.joshwcomeau.com/rss.xml
-                title: Josh Comeau
-              - url: https://samwho.dev/rss.xml
-              - url: https://ishadeed.com/feed.xml
-                title: Ahmad Shadeed
-
-          - type: twitch-channels
-            channels:
-              - theprimeagen
-              - j_blow
-              - piratesoftware
-              - cohhcarnage
-              - christitustech
-              - EJ_SA
-
-      - size: full
-        widgets:
-          - type: group
-            widgets:
-              - type: hacker-news
-              - type: lobsters
-
-          - type: videos
-            channels:
-              - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
-              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-              - UCsBjURrPoezykLs9EqgamOA # Fireship
-              - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
-              - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
-
-          - type: group
-            widgets:
-              - type: reddit
-                subreddit: technology
-                show-thumbnails: true
-              - type: reddit
-                subreddit: selfhosted
-                show-thumbnails: true
-
-      - size: small
-        widgets:
-          - type: weather
-            location: London, United Kingdom
-            units: metric # alternatively "imperial"
-            hour-format: 12h # alternatively "24h"
-            # Optionally hide the location from being displayed in the widget
-            # hide-location: true
-
-          - type: markets
-            markets:
-              - symbol: SPY
-                name: S&P 500
-              - symbol: BTC-USD
-                name: Bitcoin
-              - symbol: NVDA
-                name: NVIDIA
-              - symbol: AAPL
-                name: Apple
-              - symbol: MSFT
-                name: Microsoft
-
-          - type: releases
-            cache: 1d
-            # Without authentication the Github API allows for up to 60 requests per hour. You can create a
-            # read-only token from your Github account settings and use it here to increase the limit.
-            # token: ...
-            repositories:
-              - glanceapp/glance
-              - go-gitea/gitea
-              - immich-app/immich
-              - syncthing/syncthing
-  - name: System Dashboard
-    columns:
-      - size: full
-        widgets:
           - type: docker-containers
             title: Docker Containers Status
             show-stopped: true
@@ -359,3 +293,26 @@ pages:
                   glance.icon: si:pihole
                   glance.url: http://192.168.1.76/admin
                   glance.description: Network-wide ad blocker
+      - size: small
+        widgets:
+          - type: server-stats
+            servers:
+              - type: local
+                name: Pi5
+          - type: monitor
+            cache: 1m
+            title: System Monitoring
+            sites:
+              - title: Grafana
+                url: http://192.168.1.76:3000
+                check-url: http://192.168.1.76:3000
+                icon: di:grafana
+              - title: Prometheus
+                url: http://192.168.1.76:9090
+                check-url: http://192.168.1.76:9090
+                icon: di:prometheus
+              - title: InfluxDB
+                url: http://192.168.1.76:8086
+                check-url: http://192.168.1.76:8086
+                icon: di:influxdb
+      

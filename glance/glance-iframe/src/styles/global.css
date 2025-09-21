@@ -1,0 +1,118 @@
+/* Import JetBrains Mono font */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+/* CSS Custom Properties - Glance Theme */
+:root {
+  /* Base theme colors (Glance default dark theme) */
+  --color-background: hsl(240, 8%, 9%);
+  --color-widget-background: hsl(240, 8%, 10%);
+  --color-widget-background-highlight: hsl(240, 8%, 13%);
+  --color-widget-content-border: hsl(240, 8%, 13%);
+  --color-separator: hsl(240, 8%, 13%);
+  
+  /* Primary colors */
+  --color-primary: hsl(43, 50%, 70%);
+  --color-positive: hsl(43, 50%, 70%);
+  --color-negative: hsl(0, 70%, 70%);
+  
+  /* Text colors (calculated with contrast multiplier) */
+  --color-text-highlight: hsl(240, 8%, 85%);
+  --color-text-paragraph: hsl(240, 8%, 73%);
+  --color-text-base: hsl(240, 8%, 58%);
+  --color-text-base-muted: hsl(240, 8%, 52%);
+  --color-text-subdue: hsl(240, 8%, 35%);
+  
+  /* Layout */
+  --border-radius: 5px;
+  --widget-gap: 15px;
+  --widget-content-vertical-padding: 10px;
+  --widget-content-horizontal-padding: 12px;
+  --font-size-base: 11px;
+  --font-size-h1: 14px;
+  --font-size-h2: 13px;
+  --font-size-h3: 12px;
+  --font-size-h4: 11px;
+  --font-size-h5: 10px;
+  --font-size-h6: 9px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-ligatures: none;
+  line-height: 1.5;
+  color: var(--color-text-base);
+  background-color: var(--color-background);
+  font-size: var(--font-size-base);
+  overflow-y: scroll;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5 {
+  font: inherit;
+  color: var(--color-text-highlight);
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+h4 { font-size: var(--font-size-h4); }
+h5 { font-size: var(--font-size-h5); }
+
+span {
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  overflow-wrap: break-word;
+}
+
+button {
+  font: inherit;
+  border: 0;
+  cursor: pointer;
+  background: none;
+  color: inherit;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 0.1rem;
+  border-radius: var(--border-radius);
+}
+
+/* Selection styles */
+::selection {
+  background-color: hsl(240, 8%, 20%);
+  color: var(--color-text-highlight);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-subdue);
+  border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar {
+  background: var(--color-background);
+  height: 5px;
+  width: 10px;
+}
+
+html {
+  scrollbar-color: var(--color-text-subdue) transparent;
+  scroll-behavior: smooth;
+}

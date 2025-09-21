@@ -24,23 +24,6 @@ services:
     networks:
       - servarrnetwork
 
-  # nzbget:
-  #   image: lscr.io/linuxserver/nzbget:latest
-  #   container_name: nzbget
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - /mnt/nas1/docker/media/nzbget:/config
-  #     - /mnt/nas1/downloads:/data
-  #   restart: unless-stopped
-  #   networks:
-  #     - servarrnetwork
-  #   ports:
-  #     - 6789:6789  # default NZBGet port
-
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
@@ -49,7 +32,6 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /mnt/nas1/docker/media/prowlarr:/config
     restart: unless-stopped
     networks:
@@ -66,9 +48,9 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /mnt/nas1/docker/media/sonarr:/config
-      - /mnt/nas1/media:/data
+      - /mnt/nas1/media/tv:/tv
+      - /mnt/nas1/downloads:/downloads
     ports:
       - 8989:8989
     networks:
@@ -83,30 +65,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /mnt/nas1/docker/media/radarr:/config
-      - /mnt/nas1/media:/data
+      - /mnt/nas1/media/movies:/movies
+      - /mnt/nas1/downloads:/downloads
     ports:
       - 7878:7878
     networks:
       - servarrnetwork
-
-  # lidarr:
-  #   container_name: lidarr
-  #   image: lscr.io/linuxserver/lidarr:latest
-  #   restart: unless-stopped
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - /mnt/nas1/docker/media/lidarr:/config
-  #     - /mnt/nas1/downloads:/data
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   ports:
-  #     - 8686:8686
-  #   networks:
-  #     - servarrnetwork
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -117,9 +82,9 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /mnt/nas1/docker/media/bazarr:/config
-      - /mnt/nas1/downloads:/data
+      - /mnt/nas1/media:/media
+      - /mnt/nas1/downloads:/downloads
     ports:
       - 6767:6767
     networks:
