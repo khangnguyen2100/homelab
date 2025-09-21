@@ -17,7 +17,7 @@ const TrendingPage: React.FC = () => {
   // Filter states
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
   const [selectedDateRange, setSelectedDateRange] =
-    useState<DateRange>('weekly');
+    useState<DateRange>('daily');
 
   const loadInitialData = useCallback(async () => {
     try {
