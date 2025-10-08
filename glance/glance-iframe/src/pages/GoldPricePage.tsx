@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { GoldPrice, goldService } from '../services/goldService';
+import { getCurrentSJCPrices, getPast30DaysSJCPrices, GoldPrice } from '../services/goldService';
 import './GoldPricePage.css';
 
 ChartJS.register(
@@ -38,13 +38,13 @@ const GoldPricePage: React.FC = () => {
 
         // Fetch past 30 days data and current price
         const [monthlyResponse, currentResponse] = await Promise.all([
-          goldService.getPast30DaysSJCPrices(),
-          goldService.getCurrentSJCPrices(),
+          getPast30DaysSJCPrices(),
+          getCurrentSJCPrices(),
         ]);
 
         if (monthlyResponse.results && monthlyResponse.results.length > 0) {
           // Sort data by datetime to ensure proper chronological order
-          const sortedData = monthlyResponse.results.sort((a, b) => 
+          const sortedData = monthlyResponse.results.sort((a: GoldPrice, b: GoldPrice) => 
             parseInt(a.datetime) - parseInt(b.datetime)
           );
           setGoldData(sortedData);

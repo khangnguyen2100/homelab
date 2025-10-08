@@ -4,8 +4,9 @@ import RepositoryCard from '../components/RepositoryCard';
 import FilterBar from '../components/FilterBar';
 import { Repository } from '../types/repository';
 import { DateRange } from '../constants/languages';
-import { GitHubTrendingService } from '../services/githubTrendingService';
+
 import './TrendingPage.css';
+import { fetchPaginatedRepositories } from 'src/services';
 
 const TrendingPage: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -25,7 +26,7 @@ const TrendingPage: React.FC = () => {
       setError(null);
 
       const { repositories: initialRepos, hasMore: initialHasMore } =
-        await GitHubTrendingService.fetchPaginatedRepositories(
+        await fetchPaginatedRepositories(
           1,
           selectedLanguage,
           selectedDateRange,
@@ -50,7 +51,7 @@ const TrendingPage: React.FC = () => {
 
       const nextPage = currentPage + 1;
       const { repositories: newRepos, hasMore: moreAvailable } =
-        await GitHubTrendingService.fetchPaginatedRepositories(
+        await fetchPaginatedRepositories(
           nextPage,
           selectedLanguage,
           selectedDateRange,
