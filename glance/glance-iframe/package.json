@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cd /mnt/nas1/WorkSpace/homelab/glance && docker compose up -d --build --force-recreate glance-iframe",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
